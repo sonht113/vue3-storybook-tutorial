@@ -15,33 +15,29 @@
     </template>
 
     <Column
+      v-for="col of columns"
+      :key="col.field"
+      :field="col.field"
+      :header="col.header"
+    >
+      <template #body="{ data, field }">
+        {{
+          field === "image" && col.element
+            ? col.element(data[field])
+            : data[field]
+        }}
+      </template></Column
+    >
+
+    <!-- <Column
       selectionMode="multiple"
       style="width: 3rem"
       :exportable="false"
-    ></Column>
-    <Column
-      field="code"
-      header="Code"
-      sortable
-      style="min-width: 12rem"
-    ></Column>
-    <Column
-      field="name"
-      header="Name"
-      sortable
-      style="min-width: 16rem"
-    ></Column>
-    <Column header="Image">
-      <template #body="slotProps">
-        <img
-          :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`"
-          :alt="slotProps.data.image"
-          class="shadow-2 border-round"
-          style="width: 64px"
-        />
-      </template>
-    </Column>
-    <Column field="price" header="Price" sortable style="min-width: 8rem">
+    ></Column> -->
+    <!-- <Column field="code" header="Code" style="min-width: 12rem"></Column>
+    <Column field="name" header="Name" style="min-width: 16rem"></Column>
+    <Column header="Image" slot="<img />"> </Column> -->
+    <!-- <Column field="price" header="Price" style="min-width: 8rem">
       <template #body="slotProps">
         {{ formatCurrency(slotProps.data.price) }}
       </template>
@@ -49,10 +45,9 @@
     <Column
       field="category"
       header="Category"
-      sortable
       style="min-width: 10rem"
     ></Column>
-    <Column field="rating" header="Reviews" sortable style="min-width: 12rem">
+    <Column field="rating" header="Reviews" style="min-width: 12rem">
       <template #body="slotProps">
         <Rating
           :modelValue="slotProps.data.rating"
@@ -61,12 +56,7 @@
         />
       </template>
     </Column>
-    <Column
-      field="inventoryStatus"
-      header="Status"
-      sortable
-      style="min-width: 12rem"
-    >
+    <Column field="inventoryStatus" header="Status" style="min-width: 12rem">
       <template #body="slotProps">
         <Tag
           :value="slotProps.data.inventoryStatus"
@@ -81,7 +71,7 @@
           <Button icon="pi pi-trash" outlined rounded severity="danger" />
         </div>
       </template>
-    </Column>
+    </Column> -->
   </DataTable>
 </template>
 
@@ -92,16 +82,18 @@ import Column from "primevue/column";
 import Rating from "primevue/rating";
 import Tag from "primevue/tag";
 import Button from "primevue/button";
+import { ColumnType } from "@/ts/types";
 
 import "primevue/resources/themes/lara-light-green/theme.css";
 import "/node_modules/primeflex/primeflex.css";
 
 const {
   value,
+  columns,
   selectionMode = "single",
   selection,
   ...props
-} = withDefaults(defineProps<DataTableProps>(), {});
+} = withDefaults(defineProps<DataTableProps & { columns: ColumnType[] }>(), {});
 
 const formatCurrency = (value: string | number) => {
   if (value)
