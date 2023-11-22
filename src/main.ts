@@ -4,8 +4,9 @@ import PrimeVue from "primevue/config";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
 import "primevue/resources/themes/lara-light-green/theme.css";
-import "/node_modules/primeflex/primeflex.css";
+import "primevue/resources/primevue.min.css"; /* Deprecated */
+import "primeicons/primeicons.css";
 
 createApp(App).use(store).use(router).use(PrimeVue).mount("#app");
