@@ -1,45 +1,44 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 import { DataTableProps } from "primevue/datatable";
 
-import Table from "../components/table/Table.vue";
-import { products } from "../data";
+import { Table } from "@/components";
+import { products } from "@/data";
+import { ColumnType } from "@/ts/types";
 
 const columns = [
-  { field: "code", header: "Code" },
-  { field: "name", header: "Name" },
-  { field: "quantity", header: "Quantity" },
+  { field: "code", header: "Code", style: "min-width: 12rem" },
+  { field: "name", header: "Name", style: "min-width: 16rem" },
+  {
+    field: "price",
+    header: "Price",
+  },
 ];
 
-const meta: Meta<DataTableProps> = {
+const meta: Meta<DataTableProps & { columns: ColumnType[] }> = {
   title: "Example/Table",
   component: Table,
   tags: ["autodocs"],
-  render: (args: DataTableProps) => ({
-    components: { Table },
-    setup() {
-      return { args };
-    },
-    template: '<Table :value="args.value" :size="args.size" />',
-  }),
   argTypes: {
     size: { control: "select", options: ["small", "normal", "large"] },
+  },
+  args: {
+    columns: columns,
+    value: products,
   },
 };
 
 export default meta;
 
-type Story = StoryObj<DataTableProps>;
+type Story = StoryObj<DataTableProps & { columns: ColumnType[] }>;
 
 export const Small: Story = {
   args: {
     size: "small",
-    value: products,
   },
 };
 
 export const Large: Story = {
   args: {
     size: "large",
-    value: products,
   },
 };

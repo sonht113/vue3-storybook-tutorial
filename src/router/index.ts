@@ -1,11 +1,23 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import HomeView from "@/views/HomeView.vue";
+import ProductDetailView from "@/views/product/ProductDetailView.vue";
+import ProductCreateView from "@/views/product/ProductCreateView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "home",
     component: HomeView,
+  },
+  {
+    path: "/product/create",
+    name: "create-product",
+    component: ProductCreateView,
+  },
+  {
+    path: "/product/:id",
+    name: "product-detail",
+    component: ProductDetailView,
   },
   {
     path: "/about",
@@ -21,6 +33,7 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+  strict: true,
 });
 
 export default router;
