@@ -17,6 +17,7 @@
         :size="'small'"
         :columns="columns"
         :show-gridlines="true"
+        @on-delete="handleDelete"
       />
     </template>
   </DefaultLayout>
@@ -25,11 +26,12 @@
 <script lang="ts" setup>
 import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "primevue/toolbar";
+import { useToast } from "primevue/usetoast";
 
 import DefaultLayout from "@/layout/DefaultLayout.vue";
 import { Table } from "@/components";
 import { ColumnType } from "../ts/types";
-import { ProductData, getAllProduct } from "@/features/product";
+import { ProductData, deleteProduct, getAllProduct } from "@/features/product";
 import { ButtonCustom } from "@/components";
 import router from "@/router";
 
@@ -41,10 +43,6 @@ const columns: ColumnType[] = [
     header: "Image",
   },
   {
-    field: "status",
-    header: "Status",
-  },
-  {
     field: "price",
     header: "Price",
   },
@@ -53,6 +51,8 @@ const columns: ColumnType[] = [
     header: "Created At",
   },
 ];
+
+const toast = useToast();
 
 const products = ref<ProductData[]>([]);
 const loading = ref(false);
@@ -66,8 +66,7 @@ defineComponent({
   },
 });
 
-onMounted(() => {
-  loading.value = true;
+const getProducts = () =>
   getAllProduct()
     .then((res) => {
       products.value = res;
@@ -77,5 +76,30 @@ onMounted(() => {
       loading.value = false;
       error.value = err;
     });
+
+const handleDelete = (id: string) => {
+  deleteProduct(id)
+    .then(() => {
+      toast.add({
+        severity: "success",
+        summary: "Success",
+        detail: "Deleted successfully",
+        life: 3000,
+      });
+      getProducts();
+    })
+    .catch(() =>
+      toast.add({
+        severity: "error",
+        summary: "Error",
+        detail: "Delete product failed",
+        life: 3000,
+      })
+    );
+};
+
+onMounted(() => {
+  loading.value = true;
+  getProducts();
 });
 </script>

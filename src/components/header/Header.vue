@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="storybook-header shadow-3">
-      <div>
+      <div @click="router.push('/')" class="cursor-pointer">
         <svg
           width="32"
           height="32"
@@ -37,6 +37,7 @@
 
 <script lang="ts" setup>
 import "./header.css";
+import router from "@/router";
 
 defineProps<{ user: { name: string } | null }>();
 </script>

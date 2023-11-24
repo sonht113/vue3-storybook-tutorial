@@ -47,7 +47,13 @@
             icon="pi pi-pencil"
             @click="() => router.push(`/product/${slotProps.data._id}`)"
           />
-          <Button icon="pi pi-trash" outlined rounded severity="danger" />
+          <Button
+            icon="pi pi-trash"
+            outlined
+            rounded
+            severity="danger"
+            @click="$emit('onDelete', slotProps.data._id)"
+          />
         </div>
       </template>
     </Column>
