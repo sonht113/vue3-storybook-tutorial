@@ -24,7 +24,7 @@ export class ProductController {
     return res.status(HttpStatus.OK).json(products);
   }
 
-  @Get('/product/:productId')
+  @Get('/:productId')
   async getProduct(@Res() res, @Param('productId') productId) {
     const product = await this.productService.getProduct(productId);
     if (!product) throw new NotFoundException('Product does not exist!');
